@@ -1,0 +1,77 @@
+// Menu
+// --------------------------------------------------
+.site-nav-toggle {
+  position: static;
+  float: right;
+}
+
+.site-nav {
+  @include mobile() {
+    padding: 0;
+    transform: translateY(10px);
+  }
+}
+
+.menu {
+  float: right;
+  margin: 8px 0 0 0;
+
+  @include mobile() {
+    margin: 20px 0 20px 0;
+    padding: 0;
+  }
+
+  br { display: none; }
+
+  .menu-item {
+    margin: 0;
+    @include mobile() { display: block; }
+  }
+
+  .menu-item a {
+    padding: 0 10px;
+    background: none;
+    border: none;
+    border-radius: 2px;
+    transition-property: background;
+
+    @include mobile() {
+      padding: 0 20px;
+      line-height: 3;
+      text-align: left;
+    }
+
+    &:hover { background: #e1e1e1; }
+  }
+
+  .menu-item-active{
+    @include mobile() {
+      transform: translateY(0px);
+    }
+  }
+
+  .menu-item-active a {
+    @include mobile() {
+      background: #eee;
+      &:after {
+        content: " ";
+        position: absolute;
+        top: 50%;
+        margin-top: -3px;
+        right: 28px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: $grey;
+      }
+    }
+  }
+
+  a::before {
+      display: none;
+
+      @include mobile() { display: block; }
+    }
+
+  @include mobile() { float: none; }
+}

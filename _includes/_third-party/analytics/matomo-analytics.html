@@ -1,0 +1,15 @@
+{% if site.matomo_analytics.enable %}
+<script type="text/javascript">
+  var _paq = window._paq || [];
+  _paq.push(['setRequestMethod', 'POST']);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function () {
+    var u = "{{ site.matomo_analytics.url }}";
+    _paq.push(['setTrackerUrl', u + 'm']);
+    _paq.push(['setSiteId', '{{ site.matomo_analytics.id }}']);
+    var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+    g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = '{{ site.matomo_analytics.src }}'; s.parentNode.insertBefore(g, s);
+  })();
+</script>
+{% endif %}

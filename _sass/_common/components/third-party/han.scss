@@ -1,0 +1,10 @@
+.fa {
+  font-family: FontAwesome!important;
+}
+
+// 汉字标准格式 https://github.com/ethantw/Han
+/*  Line composition
+    ------------------ */
+
+@import "inline/hws";
+@import "inline/jiya";

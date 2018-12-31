@@ -1,0 +1,7 @@
+{% if site.post_details.enable %}
+  <script type="text/javascript" src="{{ site.post_details.scrollspy_url }}" integrity="{{ site.post_details.scrollspy_integrity }}" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ site.post_details.detail_url }}" integrity="{{ site.post_details.detail_integrity }}" crossorigin="anonymous"></script>
+{% else %}
+<script type="text/javascript" src="{{ site.js | relative_url }}/src/scrollspy.js?v={{ site.version }}"></script>
+<script type="text/javascript" src="{{ site.js | relative_url }}/src/post-details.js?v={{ site.version }}"></script>
+{% endif %}

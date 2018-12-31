@@ -1,0 +1,32 @@
+{% if site.title_separator %}
+  {% assign title_separator = site.title_separator | default: '-' | replace: '|', '&#124;' %}
+{% endif %}
+{% case page.layout %}
+{% when 'index' %}
+  {% capture title %}{{ site.title }}{% if site.index_with_subtitle and site.subtitle %} {{ title_separator }} {{site.subtitle }}{% endif %}{% endcapture %}
+{% when 'post' %}
+  {% capture title %}{{ page.title }} {{ title_separator }} {{ site.title }}{% endcapture %}
+{% when 'page' %}
+  {% capture title %}
+    {% assign page_title_suffix = ' ' | append: title_separator | append: " " | append: site.title %}
+    {% if page.type == "categories" and page.title == nil %}
+      {{ __.title.categories | append: page_title_suffix }}
+    {% elsif page.type == "tags" and page.title == nil %}
+      {{ __.title.tags | append: page_title_suffix }}
+    {% elsif page.type == "about" and page.title == nil %}
+      {{ __.title.about | append: page_title_suffix }}
+    {% else %}
+      {{ page.title | append: page_title_suffix }}
+    {% endif %}
+  {% endcapture %}
+{% when 'archive' %}
+  {% capture title %}{{ __.title.archives }} {{ title_separator }} {{ site.title }}{% endcapture %}
+{% when 'category' %}
+  {% capture title %}{{ __.title.category }} {{ title_separator }} {{ site.title }}{% endcapture %}
+{% when 'tag' %}
+  {% capture title %}{{ __.title.tag }} {{ title_separator }} {{ site.title }}{% endcapture %}
+{% when 'schedule' %}
+  {% capture title %}{{ __.title.schedule }} {{ title_separator }} {{ site.title }}{% endcapture %}
+{% endcase %}
+
+{% assign title = title | strip_newlines | strip %}

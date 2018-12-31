@@ -1,0 +1,13 @@
+{% if site.haninline.enable %}
+  {% assign haninline_uri = site.vendors._internal | append: '/Han/dist/han.min.js' | relative_url %}
+  {% if site.haninline.url %}
+    {% assign haninline_uri = site.haninline.url %}
+  {% endif %}
+  <script type="text/javascript" src="{{ haninline_uri }}" integrity="{{ site.haninline.integrity }}" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    Han(document.body)
+    // .initCond()
+    .renderJiya()
+    .renderHWS()
+  </script>
+{% endif %}
