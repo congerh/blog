@@ -5,6 +5,8 @@ categories:
 tags:
   - Java
   - Exception
+copyright_url: https://lrwinx.github.io/2016/04/28/如何优雅的设计java异常/
+author: Lrwin
 ---
 
 异常处理是程序开发中必不可少操作之一，但如何正确优雅的对异常进行处理确是一门学问，笔者根据自己的开发经验来谈一谈我是如何对异常进行处理的。
@@ -762,4 +764,4 @@ ok,这样就完成了api异常转化成用户可以读懂的DTO对象了，代�
 
 ## 参考
 
-本文转载自[[如何优雅的设计java异常](https://lrwinx.github.io/2016/04/28/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1java%E5%BC%82%E5%B8%B8/)]，原作者Lrwin
+* [如何优雅的设计java异常](https://lrwinx.github.io/2016/04/28/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1java%E5%BC%82%E5%B8%B8/)

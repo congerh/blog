@@ -33,7 +33,17 @@ paginate: 10
   #paginate_path: "/page:num/"
 
 # Handling Reading
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "Gemfile", "Gemfile.lock", "README_en.md", "vendor"]
+exclude: [
+  ".rvmrc",
+  ".rbenv-version",
+  "README.md",
+  "Rakefile",
+  "changelog.md",
+  "Gemfile",
+  "Gemfile.lock",
+  "README_en.md",
+  "vendor"
+]
 
 # Separator
 #excerpt_separator: <!-- more -->
@@ -60,6 +70,7 @@ defaults:
     values:
       layout: "post"
       comments: true
+      author: ConGerh
 
 # Atom feed
 feed:
@@ -220,6 +231,8 @@ font:
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
 social:
   GitHub: https://github.com/congerh
+  "SSH Key": https://github.com/congerh.keys
+  "PGP Key": https://github.com/congerh.gpg
 
 # Social Links Icons
 # Icon Mapping:
@@ -233,6 +246,8 @@ social_icons:
   GitHub: github
   Twitter: twitter
   Weibo: weibo
+  "SSH Key": terminal
+  "PGP Key": key
 
 
 # Sidebar Avatar
@@ -251,7 +266,7 @@ toc:
   wrap: false
 
   # If true, all level of TOC in a post will be displayed, rather than the activated part of it.
-  expand_all: true
+  expand_all: false
 
 
 # Creative Commons 4.0 International License.
@@ -336,9 +351,9 @@ post_wordcount:
 
 # Declare license on posts
 post_copyright:
-  enable: false
-  license: CC BY-NC-SA 3.0
-  license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
+  enable: true
+  license: <i class="fa fa-creative-commons fa-fw"></i> BY-NC-SA 4.0
+  license_url: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 # HTML Compression
 # https://jch.penibelst.de/
@@ -355,7 +370,14 @@ compress_html:
 # dns prefetch
 dns_prefetch:
   enable: true
-  urls: ["https://cdn.njilc.net", "https://matomo.njilc.com", "https://utterances.njilc.com", "https://api.utterances.njilc.com", "https://cdn.jsdelivr.net", "https://api.github.com"]
+  urls: [
+    "https://cdn.njilc.net",
+    "https://matomo.njilc.com",
+    "https://utterances.njilc.com",
+    "https://api.utterances.njilc.com",
+    "https://cdn.jsdelivr.net",
+    "https://api.github.com"
+  ]
 
 # ---------------------------------------------------------------
 # Misc Theme Settings
@@ -604,7 +626,7 @@ local_search:
   trigger: auto
   # show top n results per article, show all results by setting to -1
   top_n_per_article: 1
-  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/localsearch.js
+  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/localsearch.js
   integrity: sha512-ROno4FpdqK4r12ZSYkJGikTzpKgtz8IoU48RDALagG/HMnB5NwvuzA2qWbM7rhkeF/pO09i6SVfoxvWiOZiTDw==
 
 # External URL with BASE64 encrypt & decrypt
@@ -752,26 +774,26 @@ vendors:
 
 haninline:
   enable: true
-  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/lib/Han/dist/han.min.js
+  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/lib/Han/dist/han.min.js
   integrity: sha512-UIUqj95aya/QoqH/Il/GQVcZ8EVDQWe1GjaxdsOEPVgOSe0hS26/amVBU4A/EXeOyV3FmfJ0JYCGVfRASzW1GA==
 
 commons:
   enable: true
-  utils_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/utils.js
+  utils_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/utils.js
   utils_integrity: sha512-wS7y5wep4PyJiTRkME9AWhWtcu2v5ct87BRvs+v9aSGsC30I3xKAG+ySqtbQ6CEPpo+bzyMSdlbMoZdOaHuphA==
-  motion_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/motion.js
+  motion_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/motion.js
   motion_integrity: sha512-MCDxMz5MBt2uROP/YnUhosozINiFJcM2uzPU+ZRwNG/lcxu8tPyIFsTcq8R4SsRgGRCpCBAsPzRYQV8CMhXBNw==
 
 post_details:
   enable: true
-  scrollspy_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/scrollspy.js
-  scrollspy_integrity: sha512-dP3eT3aqpf+eZd4Bauk09Vh7NoIA/I0a172n7YTLH+wUxYr98h9fwWUrglIQhNph3KQjaE5QUmJl6sqApzQCxA==
-  detail_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/post-details.js
-  detail_integrity: sha512-Bx2ZIm9Kn4fiPynqC4Iu+WzMDmoYpohx6z1VhuXOT4FKyMyHzd0GhVjLLNwlpmZ/liLn3IXQFFdi0JHXSNy3LQ==
+  scrollspy_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/scrollspy.js
+  scrollspy_integrity: sha512-yGy3KIUbBBXwQ6XjbRRWwF9183NxUHTRnYhYl0VZvyaMmBIjR8aUyidf+UuSGP8UC0HvumzHGSVaOR3Wp8P7yQ==
+  detail_url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/post-details.js
+  detail_integrity: sha512-tYnOVlpiQoasfLCTQZ/c+CHIdFENaTOKgcmFtoHuc+OaISAGwY308QTJNN3kwen4gLpfzJ75Mws69T/WtcWwFA==
 
 bootstrap:
   enable: true
-  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.0.0/assets/js/src/bootstrap.js
+  url: https://cdn.jsdelivr.net/gh/congerh/blog@1.1.0/assets/js/src/bootstrap.js
   integrity: sha512-hiHG3tYS0jMA2A0joJvvXBNiTdRSStt5EINU7DpqP1kwmu92bQPPmg6VgTbskuiwmfTdJX1Gg9JdeOENFVQxiw==
 
 # Assets

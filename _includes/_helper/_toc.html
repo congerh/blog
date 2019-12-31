@@ -21,10 +21,7 @@
         {% assign id = tmp[1] | strip | replace: '"', '' %}
 
         <li class="{{ class }}-item {{ class }}-level-{{ include.level }}">
-          <a class="{{ class }}-link" href="#{{ id }}">
-            {% if list_number %}
-              <span class="{{ class }}-number">{{ include.number_prefix }}{{ forloop.index }}</span>
-            {% endif %}
+          <i class="fa fa-angle-right fa-fw nav-toc-toggle"></i><a class="{{ class }}-link" href="#{{ id }}">{% if list_number %}<span class="{{ class }}-number">{{ include.number_prefix }}{{ forloop.index }}</span>{% endif %}
             <span class="{{ class }}-text">{{ toc_title }}</span>
           </a>
 
@@ -32,10 +29,10 @@
           {% assign level = include.level | plus: 1 %}
           {% include _helper/_toc.html source=source level=level number_prefix=number_prefix %}
           {% if _toc.size != 0 %}
-          {% if site.toc.expand_all %}
-            {% assign expand_display = 'style="display: block;"' %}
-          {% endif %}
-            <ol class="{{ class }}-child" {{ expand_display }}>
+            {% if site.toc.expand_all %}
+              {% assign expand_display = 'style="display: block;"' %}
+            {% endif %}
+            <ol class="{{ class }}-subtoc {{ class }}-child" {{ expand_display }}>
               {{ _toc }}
             </ol>
           {% endif %}

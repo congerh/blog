@@ -134,6 +134,19 @@
     }
 
     active.trigger('activate.bs.scrollspy');
+
+    var allNavSubtoc = $(".post-toc").find(".nav-subtoc");
+    allNavSubtoc.each(function () {
+      var navSubtoc = $(this);
+      var navTocToggle = navSubtoc.siblings("i");
+      if (navSubtoc.css("display") == "none") {
+        navTocToggle.removeClass("fa-angle-down");
+        navTocToggle.addClass("fa-angle-right");
+      } else if (navSubtoc.css("display") == "block") {
+        navTocToggle.removeClass("fa-angle-right");
+        navTocToggle.addClass("fa-angle-down");
+      }
+    });
   };
 
   ScrollSpy.prototype.clear = function() {

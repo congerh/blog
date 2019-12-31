@@ -118,7 +118,7 @@ $(document).ready(function () {
     item.addClass(activeTabClassName);
   });
 
-  $('.post-toc a').on('click', function (e) {
+  $('.post-toc .nav-link').on('click', function (e) {
     e.preventDefault();
     var targetSelector = NexT.utils.escapeSelector(decodeURIComponent(this.getAttribute('href')));
     var offset = $(targetSelector).offset().top;
@@ -132,6 +132,26 @@ $(document).ready(function () {
         scrollTop: offset
       }, 500);
   });
+
+  var navTocToggle = $(".nav").find(".nav-subtoc").siblings("i");
+  navTocToggle.removeClass("nav-toc-toggle");
+  navTocToggle.on('click', function (e) {
+    e.preventDefault();
+    switchNavTocToggle(this);
+  });
+
+  function switchNavTocToggle(navTocToggle) {
+    var navSubtoc = $(navTocToggle).siblings(".nav-subtoc");
+    if ($(navTocToggle).hasClass("fa-angle-right")) {
+      $(navTocToggle).removeClass("fa-angle-right");
+      $(navTocToggle).addClass("fa-angle-down");
+      navSubtoc.css("display", "block");
+    } else {
+      $(navTocToggle).removeClass("fa-angle-down");
+      $(navTocToggle).addClass("fa-angle-right");
+      navSubtoc.css("display", "none");
+    }
+  }
 
   // Expand sidebar on post detail page by default, when post has a toc.
   var $tocContent = $('.post-toc-content');

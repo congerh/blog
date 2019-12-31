@@ -5,6 +5,9 @@ categories:
 tags:
   - 三国
   - 出师表
+copyright_url: https://example.com
+copyright_title: title
+author: test
 ---
 
 这是一篇测试文章。
@@ -78,11 +81,11 @@ tags:
 | Theme              | Value          |
 |:------------------:|:--------------:|
 | GitHub Light       | `github-light` |
-| GitHub Dark        | `github-light` |
-| GitHub Dark Orange | `github-light` |
-| Icy Dark           | `github-light` |
-| Dark Blue          | `github-light` |
-| Photon Dark        | `github-light` |
+| GitHub Dark        | `github-dark` |
+| GitHub Dark Orange | `github-dark-orange` |
+| Icy Dark           | `icy-dark` |
+| Dark Blue          | `dark-blue` |
+| Photon Dark        | `photon-dark` |
 
 ### 中英文混排间距
 

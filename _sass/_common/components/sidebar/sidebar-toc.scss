@@ -10,7 +10,7 @@
 
 .post-toc ol {
   margin: 0;
-  padding: 0 2px 5px 10px;
+  padding: 0 2px 5px 0px;
   text-align: left;
   list-style: none;
   font-size: 14px;
@@ -37,13 +37,25 @@
   line-height: 1.8;
 }
 
-.post-toc .nav .nav-child { display: none; }
+.post-toc .nav .nav-toc-toggle {
+  visibility: hidden;
+}
+
+.post-toc .nav .nav-subtoc {
+  display: none;
+  border-left: 1px solid $toc-indent-guides;
+  margin-left: 18px;
+}
 
 .post-toc .nav .active > .nav-child { display: block; }
 
 .post-toc .nav .active-current > .nav-child {
   display: block;
   & > .nav-item { display: block; }
+}
+
+.post-toc .nav .nav-item > a {
+  border-bottom: 0px;
 }
 
 .post-toc .nav .active > a {

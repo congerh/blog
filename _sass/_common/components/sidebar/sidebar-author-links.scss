@@ -1,11 +1,17 @@
 .links-of-author { margin-top: 20px; }
 
+.links-of-author-again {
+  text-align: left;
+  display: inline-grid;
+}
+
 .links-of-author a {
   display: inline-block;
   vertical-align: middle;
   margin-right: 10px;
   margin-bottom: 10px;
-  border-bottom-color: $black-light;
+  // border-bottom-color: $black-light;
+  border: 0;
   font-size: 13px;
 
   &:before {

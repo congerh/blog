@@ -93,20 +93,22 @@
         {% endif %}
 
         <div class="links-of-author motion-element">
-          {% if site.social %}
-            {% for name_link in site.social %}
-              {% assign name = name_link[0] %}
-              {% assign link = name_link[1] %}
-              <span class="links-of-author-item">
-                <a href="{{ link }}" target="_blank" title="{{ name }}">
-                  {% if site.social_icons.enable %}
-                    <i class="fa fa-fw fa-{{ site.social_icons[name] | default: 'globe' | downcase }}"></i>
-                  {% endif %}
-                  {{ name }}
-                </a>
-              </span>
-            {% endfor %}
-          {% endif %}
+          <div class="links-of-author-again">
+            {% if site.social %}
+              {% for name_link in site.social %}
+                {% assign name = name_link[0] %}
+                {% assign link = name_link[1] %}
+                <span class="links-of-author-item">
+                  <a href="{{ link }}" target="_blank" title="{{ name }}">
+                    {% if site.social_icons.enable %}
+                      <i class="fa fa-fw fa-lg fa-{{ site.social_icons[name] | default: 'globe' | downcase }}"></i>
+                    {% endif %}
+                    {{ name }}
+                  </a>
+                </span>
+              {% endfor %}
+            {% endif %}
+        </div>
         </div>
 
         {% assign cc = 'by, by-nc, by-nc-nd, by-nc-sa, by-nd, by-sa, zero' | split: ', ' %}

@@ -1,46 +1,46 @@
 ---
 title: "自托管Utterances教程：基于Github Issues的轻量级博客评论系统"
 categories:
-  - Java
+  - Blog
 tags:
-  - Utterances
-  - 评论
-  - 博客评论
-  - 自托管
+  - 自托管Utterances教程
+  - 博客评论系统
+  - Cloudflare Workers
+  - GitHub Actions
   - Serverless
 ---
 
-本文主要介绍基于Github Issues的轻量级博客评论系统Utterances。文章前半部分主要介绍Utterances的配置与使用，后半部分主要介绍如何利用近年来流行的Serverless化平台，自托管Utterances。
+本文主要介绍基于Github Issues的轻量级博客评论系统Utterances。文章前半部分主要介绍Utterances的配置与使用，后半部分主要介绍如何利用近年来流行的Serverless化平台Cloudflare Workers自托管Utterances。
 
 ## Utterances简介
 
 Utterances是一个基于Github Issues的轻量级评论系统，可用于博客、Wiki等。它具有以下优点：
 
 - 开源
-- 不追踪用户，没有广告，始终免费
+- 不追踪，无广告，始终免费
 - 所有的数据都存储在Github Issues
-- 样式基于[Primer](https://primer.style)设计语言
+- 样式基于Github的[Primer](https://primer.style)设计语言
 - 夜间模式
-- 轻量级，使用Vanilla TypeScript，不使用网络字体，使用JavaScript框架或者Polyfill兼容旧浏览器。
+- 轻量级；原生TypeScript；在“常青树”浏览器上不使用网络字体，JavaScript框架或Polyfill。
 
 ## 快速上手
 
-- 在GitHub上新建一个公开仓库，安装[Utterances GitHub App](https://github.com/apps/utterances)至该仓库。
-- 在你的网页需要插入Utterances评论系统的位置，粘贴以下代码（username，reponame分别修改为你的GitHub用户名，仓库名）。
+1. 在GitHub上新建一个公开仓库（Repository），安装[Utterances GitHub App](https://github.com/apps/utterances)至该仓库。
+1. 在你的网页需要插入Utterances评论的位置，粘贴以下代码（username，reponame分别修改为你的GitHub用户名，仓库名）。
 
-  ```js
-  <script src="https://utteranc.es/client.js"
-          repo="username/reponame"
-          issue-term="pathname"
-          theme="github-light"
-          crossorigin="anonymous"
-          async>
-  </script>
-  ```
+    ```js
+    <script src="https://utteranc.es/client.js"
+            repo="username/reponame"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+    </script>
+    ```
 
-完成以上操作后刷新网页就可以使用Utterances了。
+1. 刷新网页就可以看到Utterances评论框了。
 
-如果想进一步配置或者自托管Utterances，可以继续下面的内容。
+如果想进一步配置或者自托管Utterances，可以继续看下面的内容。
 
 ## 配置
 
@@ -64,7 +64,7 @@ Utterances 使用Github Issues存储评论，所以需要一个仓库。你可�
 仓库需满足以下条件：
 
 - 仓库必须为公开仓库，私有仓库访客无法查看对应Issues上的评论。
-- 确保在仓库中安装了[Utterances GitHub App](https://github.com/apps/utterances)，否则用户将无法发表评论。
+- 确保在仓库中安装了[Utterances的GitHub App](https://github.com/apps/utterances)，或是你自己注册的GitHub App（自托管），否则用户将无法发表评论。
 - 如果你的仓库是派生(fork)出的，请在仓库的`Settings`选项确认`Features`区`Issues`已勾选。
 
 ### `issue-term`：博客文章和Issue映射
@@ -107,11 +107,11 @@ Utterances有多种主题，其中包括多款夜间模式主题。
 - Dark Blue：`theme="dark-blue"`
 - Photon Dark：`theme="photon-dark"`
 
-你可以在文章末尾处的下拉框中选择主题查看效果，[点击此处跳转](#参考)。
+你可以在文章末尾处的下拉框中选择主题以查看效果，[点击此处](#参考)跳转到文末。
 
 ## 自托管
 
-自托管Utterances主要包含两个项目的部署：
+自托管Utterances主要包含以下两个项目的部署：
 
 - [Utterances](https://github.com/utterance/utterances)：前端静态网站，评论系统的界面显示，部署在GitHub Pages
 - [utterances-oauth](https://github.com/utterance/utterances-oauth)：后端API，主要功能是授权，鉴权和创建Issues，部署在Cloudflare Workers
@@ -119,13 +119,22 @@ Utterances有多种主题，其中包括多款夜间模式主题。
 ### 准备环境
 
 - Debian、Ubuntu或是其他Linux发行版（教程里用的是Debian 10）
-- GitHub账号(用于申请GitHub App及仓库)
+- GitHub账号(用于申请GitHub App及创建仓库等)
 - Cloudflare账号(用于申请Cloudflare Workers)
 - 域名（可选，用于解决第三方Cookie的问题，详情见FAQ：[如何解决第三方Cookie的问题](#如何解决第三方cookie的问题)）
 
-### 在Cloudflare Workers上托管utterances-oauth
+为方便说明配置，教程中有以下假设，如有雷同，纯属巧合。
 
-#### 注册GitHub App
+- GitHub用户名：`example`
+- GitHub Pages域名：`example.github.io`
+- Cloudflare Worker子域名：`example.workers.dev`
+- 博客域名：`blog.example.com`
+- Utterances部署域名：`utterances.example.com`
+- utterances-oauth部署域名：`api.utterances.example.com`
+
+你需要替换教程中的相关关键字。
+
+### 注册GitHub App
 
 打开<https://github.com/settings/apps/new>注册自己的GitHub App，仅需要填写以下内容，其它默认:
 
@@ -134,7 +143,7 @@ Utterances有多种主题，其中包括多款夜间模式主题。
 | GitHub App name | 你的博客的名字 |
 | Description | 你的博客的描述 |
 | Homepage URL | 你的博客的网址 |
-| User authorization callback URL | 你的Cloudflare Worker子域以`/authorized`结尾。例如：`https://utterances_oauth.your_subdomain.workers.dev/authorized` |
+| User authorization callback URL | utterances-oauth部署域名，以`/authorized`结尾。例如：`https://api.utterances.example.com/authorized`。如果你使用Cloudflare Worker子域域名，应为：`https://utterances-oauth.example.workers.dev/authorized` |
 | Webhook URL | 必填项，但是Utterances不使用此项。随意填，例如你的博客网址。 |
 | Repository permissions | 仅`Issues: Read & Write`，不需要其它权限。 |
 | Where can this GitHub App be installed | 仅此账号（Only on this account） |
@@ -142,6 +151,10 @@ Utterances有多种主题，其中包括多款夜间模式主题。
 注册成功后，系统会提示你生成私钥（Generate a private key），点击生成（这是必须的步骤，否则无法使用GitHub App）。但是Utterances不使用私钥，无需记住其值。
 
 记下`Client ID`和`Client secret`的值，后面会用到它。
+
+### 在Cloudflare Workers上托管utterances-oauth
+
+利用近年来流行的Serverless平台[Cloudflare Workers](https://workers.cloudflare.com/)，你可以方便的部署utterances-oauth。免费版每天提供10万次请求，足够一般使用了。
 
 #### 构建utterances-oauth
 
@@ -170,26 +183,38 @@ Utterances有多种主题，其中包括多款夜间模式主题。
     - **STATE_PASSWORD**：32位密码，用于加密request headers/cookies中的`state`，[点此生成](https://www.lastpass.com/password-generator)。
     - **ORIGINS**：来源域（origin）列表。多个来源域以逗号分隔，用于跨域资源共享Cross-Origin Resource Sharing（CORS）。
 
-    示例如下（替换`*`号内容为你自己的值，ORIGINS网址改为你的博客网址）：
+    示例如下（替换`*`号内容为你自己的值，ORIGINS网址改为部署Utterances的网址）：
 
     ```properties
     BOT_TOKEN=****************************************
     CLIENT_ID=********************
     CLIENT_SECRET=****************************************
     STATE_PASSWORD=********************************
-    ORIGINS=https://example.com,http://localhost:4000
+    ORIGINS=https://utterances.example.com,http://localhost:4000
     ```
 
-1. 执行命令`yarn run build`构建utterances-oauth
+1. 执行命令`yarn run build`构建utterances-oauth，编译后的文件位于`dist/index.js`。
 
 #### 部署utterances-oauth
 
-将生成的index.js文件复制到Cloudflare Workers，并配置好路由即可。
+本教程提供三种部署的方法：
 
-utterances-oauth还提供了直接部署的方法，需要你在`.env`文件中添加以下变量
+1. 网页端：最简单，按照页面说明即可轻松部署。适合喜欢图形化用户界面（GUI）的用户
+1. cfworker：[cfworker](https://github.com/cfworker/cfworker)是Cloudflare Workers的一个功能强大的工具集，由Utterances作者开发。适合喜欢命令行界面（CLI）的用户
+1. GitHub Actions：通过[GitHub Actions](https://help.github.com/cn/actions)持续部署。适合没有本地环境，也不方便安装的人。通过GitHub Actions提供的开发环境，下载、构建、部署utterances-oauth
 
-- **CLOUDFLARE_EMAIL**：你注册Cloudflare时的邮箱
-- **CLOUDFLARE_API_KEY**：部署Cloudflare Workers需要的API Token（API令牌模板（API tokens templates）选择`Edit Cloudflare Workers`，[点此生成](https://dash.cloudflare.com/profile/api-tokens)）
+推荐使用第三种[通过GitHub Actions部署](#通过github-actions部署)的方法，这样每次版本更新的时候只需要`push`更新的内容到GitHub上，GitHub Actions就会替我们自动部署，一劳永逸。
+
+##### 通过Cloudflare Workers网页端部署
+
+登录网页版[Cloudflare](https://www.cloudflare.com)，进入Workers页面新建一个Worker，将生成的`dist/index.js`文件内容复制到Script框内（删掉默认生成的代码），修改Worker名称为`utterances-oauth`，点击Save and Deploy（保存并部署），并配置好路由等即可。
+
+##### 通过cfworker部署
+
+[cfworker](https://github.com/cfworker/cfworker)是Cloudflare Workers的一个功能强大的工具集，由Utterances作者开发，其提供了直接部署的方法，需要你在`.env`文件中添加以下变量
+
+- **CLOUDFLARE_EMAIL**：注册Cloudflare时的邮箱
+- **CLOUDFLARE_API_KEY**：部署Cloudflare Workers需要的全局API Key（Global API Key）
 - **CLOUDFLARE_ZONE_ID**：你的Cloudflare Zone ID，在你的域名的预览页（Overview）
 - **CLOUDFLARE_ACCOUNT_ID**：你的Cloudflare Account ID，在你的域名的预览页（Overview）
 - **CLOUDFLARE_WORKERS_DEV_PROJECT**：你的Cloudflare Worker项目名，例如`utterances-oauth`。项目名必须满足以下要求:
@@ -206,37 +231,159 @@ CLOUDFLARE_ACCOUNT_ID=********************************
 CLOUDFLARE_WORKERS_DEV_PROJECT=******
 ```
 
-在utterances-oauth目录下的`package.json`文件中找到此行代码  
-`"deploy": "cfworker deploy --name utteranc-es --route 'api.utteranc.es/*' src/index.ts"`  
-修改`api.utteranc.es`为你的Cloudflare Workers域名，注意域名后的`/*`要保留，执行命令：
+在utterances-oauth根目录下的`package.json`文件中找到此行代码
+
+```json
+"deploy": "cfworker deploy --name utteranc-es --route 'api.utteranc.es/*' src/index.ts"
+```
+
+修改为以下内容，注意域名后的`/*`要保留。
+
+```json
+"deploy": "cfworker deploy --name utterances-oauth --route 'api.utterances.example.com/*' src/index.ts"
+```
+
+如果你使用Cloudflare Worker子域名，则应为：
+
+```json
+"deploy": "cfworker deploy --name utterances-oauth --route 'utterances-oauth.example.workers.dev/authorized/*' src/index.ts"
+```
+
+执行命令：
 
 ```sh
 yarn run deploy
 ```
 
-成功后用浏览器打开你的Cloudflare Workers域名，你会看到页面显示`alive`字样。
+##### 通过GitHub Actions部署
+
+通过GitHub Actions部署不需要`.env`的环境变量配置文件，任何时候**绝不能**将此文件上传到公开GitHub仓库，所有涉及密码等信息的值会通过[GitHub 加密密码](https://help.github.com/cn/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets)来存储。
+
+1. 派生(fork)此仓库<https://github.com/utterance/utterances-oauth>
+
+1. 在此仓库新建一个`cloudflare-workers.yml`文件，此文件位于仓库根目录的`.github/workflows/`目录下。文件内容如下：
+
+    {% raw %}
+
+    ```yml
+    name: Deploy utterances-oauth
+    on:
+      push:
+        branches: [ master ]
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+
+        strategy:
+          matrix:
+            node-version: [14]
+
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
+
+        - name: Install Dependencies
+          run: yarn install
+
+          # Add .env before build
+        - name: Add .env
+          run: |
+            cat > .env <<EOF
+            BOT_TOKEN=$BOT_TOKEN
+            CLIENT_ID=$CLIENT_ID
+            CLIENT_SECRET=$CLIENT_SECRET
+            STATE_PASSWORD=$STATE_PASSWORD
+            ORIGINS=$ORIGINS
+            EOF
+          env:
+            BOT_TOKEN: ${{ secrets.UTTERANCES_BOT_TOKEN }}
+            CLIENT_ID: ${{ secrets.UTTERANCES_CLIENT_ID }}
+            CLIENT_SECRET: ${{ secrets.UTTERANCES_CLIENT_SECRET }}
+            STATE_PASSWORD: ${{ secrets.UTTERANCES_STATE_PASSWORD }}
+            ORIGINS: https://utterances.example.com
+
+        - name: Build
+          run: yarn run build
+
+        # Add wrangler.toml required by Wrangler
+        - name: Add wrangler.toml
+          run: |
+            cat > wrangler.toml <<EOF
+            name = "utterances-oauth"
+            type = "javascript"
+            routes = [
+                "api.utterances.example.com/*"
+            ]
+            account_id = "$ACCOUNT_ID"
+            zone_id = "$ZONE_ID"
+            EOF
+          env:
+            ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+            ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+
+        # Deploy to Cloudflare Workers with Wrangler
+        - name: Deploy to Cloudflare Workers with Wrangler
+          uses: cloudflare/wrangler-action@1.2.0
+          with:
+            apiToken: ${{ secrets.CF_API_TOKEN }}
+    ```
+
+    {% endraw %}
+
+1. 按教程“[配置环境变量](#构建utterances-oauth)”小节，修改第40行`ORIGINS`的值，修改第52行`routes`的值。
+1. 打开GitHub上派生后的仓库，在仓库名称下，单击Settings（设置），在左侧边栏中，单击 Secrets（密码）添加密码，详细步骤见[为仓库创建加密密码](https://help.github.com/cn/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets-for-a-repository)。
+
+    需要添加如下几个密码：
+
+    - **UTTERANCES_BOT_TOKEN**
+    - **UTTERANCES_CLIENT_ID**
+    - **UTTERANCES_CLIENT_SECRET**
+    - **UTTERANCES_STATE_PASSWORD**
+    - **CF_ACCOUNT_ID**
+    - **CF_ZONE_ID**
+    - **CF_API_TOKEN**
+
+    具体密码的值参考“[构建utterances-oauth](#构建utterances-oauth)”和“[通过cfworker部署](#通过cfworker部署)”这两个章节中的环境变量的值。
+
+    其中**CF_API_TOKEN**为Cloudflare API Tokens，可在Cloudflare处[生成API令牌模板](https://dash.cloudflare.com/profile/api-tokens)，`API tokens templates`选择`Edit Cloudflare Workers`，以限制此API Tokens权限为仅能编辑Cloudflare Workers。
+
+1. 将修改后的文件`push`到GitHub仓库上。之后每当你`push`更新到`master`分支时，GitHub Actions会自动将代码部署到Cloudflare Workers。
+
+#### 测试
+
+用浏览器打开`https://api.utterances.example.com`，如果你使用Cloudflare Workers子域名则打开`https://utterances-oauth.example.workers.dev`，如果看到页面显示`alive`字样，则说明utterances-oauth你已经部署成功。
 
 如果你想本地测试的话执行命令`yarn run start`。
 
 ### 在GitHub Pages上托管Utterances
 
-这里仅介绍托管在GitHub上，其它平台类似。
+1. 派生此仓库<https://github.com/utterance/utterances>
 
-1. 派生(fork)此仓库<https://github.com/utterance/utterances>
-
-1. 克隆（clone）你刚刚派生的仓库(修改`username`为你的GitHub用户名)：`git clone https://github.com/username/utterances`
+1. 克隆你刚刚派生的仓库(修改`example`为你的GitHub用户名)：`git clone https://github.com/example/utterances`
 
 1. 从`package.json`文件中找到此行代码  
 `"predeploy": "yarn run build && touch dist/.nojekyll && echo 'utteranc.es' > dist/CNAME",`  
-修改为`"predeploy": "yarn run build && touch dist/.nojekyll",`
+修改为`"predeploy": "yarn run build && touch dist/.nojekyll",`  
+注意最后有逗号`,`
 
-1. 修改`src/utterances-api.ts`文件中的网址为你的Cloudflare Workers网址
+1. 修改`src/utterances-api.ts`文件中的网址为你的utterances-oauth网址
 
     ```ts
-    export const UTTERANCES_API = 'https://utterances_oauth.your_subdomain.workers.dev';
+    export const UTTERANCES_API = 'https://api.utterances.example.com';
     ```
 
-1. 修改`src/index.html`文件中的`src`，`repo`，`issue-term`等配置项。
+    如果你使用Cloudflare Workers子域域名则修改如下：
+
+    ```ts
+    export const UTTERANCES_API = 'https://utterances-oauth.example.workers.dev';
+    ```
+
+1. 按照教程[配置](#配置)所述，修改`src/index.html`文件中如下部分的`src`，`repo`，`issue-term`等配置项。记得在存放评论的仓库上安装你注册的GitHub App。
 
     ```js
     <if condition="NODE_ENV === 'production'">
@@ -257,20 +404,24 @@ yarn run deploy
     </else>
     ```
 
-    例如修改`client.js`为自己的链接：  
-    `src="https://your_github_username.github.io/utterances/client.js"`
+    例如修改`client.js`为部署到GitHub Pages的链接：  
+    `src="https://example.github.io/utterances/client.js"`等
 
 1. 执行`yarn run deploy`部署到GitHub Pages。
 
-打开`https://your_github_username.github.io/utterances/`，登录后即可发表评论。
+部署后打开你Utterances项目的GitHub Pages页面`https://example.github.io/utterances/`，在该页面底部你可以测试评论等功能，测试完毕后你就可以按照“[快速上手](#快速上手)”，“[配置](#配置)”等教程上线你的博客评论功能了。
+
+如果你不想使用GitHub Pages，只需将第6步改为执行`yarn run build`，并将`/dist`文件夹下生成的所有文件上传到其他支持静态网页的平台即可。
+
+如果你想本地测试的话执行命令`yarn run start`。
 
 ## FAQ
 
 ### 博主为什么选择 Utterances
 
-之前一直想为博客添加评论系统，刚开始考虑的是国外的Disqus，因为在国内无法访问，所以查找过一些使用Disqus API的方法，如[DisqusJS](https://github.com/SukkaW/DisqusJS)和[Disqus PHP API](https://github.com/fooleap/disqus-php-api)，但是它们都需要后端程序，功能上也有一些局限性。之后偶然发现有人用Github Issues写博客，有人用Github Issues存储博客评论，如：[Gitment](https://github.com/imsun/gitment)、[Gitalk](https://github.com/gitalk/gitalk)以及本文介绍的[Utterances](https://github.com/utterance/utterances)都是基于Github Issues开发的评论系统。
+之前一直想为博客添加评论系统，刚开始考虑的是国外的Disqus，因为在国内无法访问，所以查找过一些使用Disqus API的方法，如[DisqusJS](https://github.com/SukkaW/DisqusJS)和[Disqus PHP API](https://github.com/fooleap/disqus-php-api)，但是它们都需要后端程序，功能上也有一些局限性。之后偶然发现有人用Github Issues存储博客评论，如：[Gitment](https://github.com/imsun/gitment)、[Gitalk](https://github.com/gitalk/gitalk)以及本文介绍的[Utterances](https://github.com/utterance/utterances)，都是基于Github Issues开发的评论系统。
 
-目前Gitment已经很久没更新了，Gitalk和Utterances都在持续更新。其中Utterances使用[Primer](https://primer.style)设计语言，这是Github官方使用并开源的设计指南，所以Utterances有和Github Issues类似的漂亮样式。Utterances使用了更精细化的权限管理，这也是笔者最后选择Utterances的原因之一。
+目前Gitment已经很久没更新了，Gitalk和Utterances都在持续更新。其中Utterances使用[Primer](https://primer.style)设计语言，这是Github官方使用并开源的设计指南，所以Utterances有和Github Issues类似的漂亮样式。Utterances使用了更精细化的权限管理（详见FAQ：[Utterances需要哪些权限](#utterances需要哪些权限)），这也是笔者最后选择Utterances的原因之一。
 
 ### Utterances的原理
 
@@ -278,9 +429,9 @@ Gitment、Gitalk和Utterances的原理都是基于GitHub Issues自带的评论�
 
 ### Utterances需要哪些权限
 
-Utterances是一个GitHub App，仅需要Issues的读写权限。不同于OAuth Apps，GitHub App提供了精细化的权限管理，且GitHub App仅能作用于安装了它的仓库，[点此查看区别](https://developer.github.com/apps/differences-between-apps/#what-can-github-apps-and-oauth-apps-access)。
+Utterances通过GitHub App来操作GitHub Issues。不同于OAuth Apps，GitHub App提供了精细化的权限管理，且GitHub App仅能作用于安装了它的仓库，闲情见[GitHub App与OAuth Apps区别](https://developer.github.com/apps/differences-between-apps/#what-can-github-apps-and-oauth-apps-access)。
 
-当你点击登录（Sign in to commnet）时，GitHub会有一个界面显示你需要授权GitHub App哪些权限。其中“确定你和GitHub App都可以访问的那些资源（Determine what resources both you and GitHub App can access）”这句可能写的让人很疑惑，这里“资源”指的是你GitHub账号权限和GitHub App权限的交集，即**Utterances只能在安装了它的仓库上读写Issues**。
+当你点击登录（Sign in to commnet）时，GitHub会有一个界面显示你需要授权GitHub App哪些权限。其中“确定你和GitHub App都可以访问的那些资源（Determine what resources both you and GitHub App can access）”这句里的“资源”指的是你GitHub账号权限和GitHub App权限的交集。由于我们在注册GitHub App时仓库权限仅勾选了`Issues: Read & Write`，所以**Utterances仅能在安装了它的仓库上读写该仓库的Issues**。
 
 ### 如何解决第三方Cookie的问题
 
@@ -301,10 +452,10 @@ Utterances仅使用Cookie保存登录信息以避免重复登录的问题，如�
 - [Authenticating with GitHub Apps](https://developer.github.com/apps/building-github-apps/authenticating-with-github-apps/)
 - [What can GitHub Apps and OAuth Apps access?](https://developer.github.com/apps/differences-between-apps/#what-can-github-apps-and-oauth-apps-access)
 
-[点击此处](#theme主题)返回`theme：主题`章节。
+在下面的下拉框中选择Utterances的主题以查看效果，[点击此处](#theme主题)返回`theme：主题`章节。
 
 {::nomarkdown}
-<select id="theme" class="form-select" value="github-light" aria-label="Theme">
+主题：<select id="theme" class="form-select" value="github-light" aria-label="Theme">
   <option value="github-light">GitHub Light</option>
   <option value="github-dark">GitHub Dark</option>
   <option value="github-dark-orange">GitHub Dark Orange</option>

@@ -6,6 +6,9 @@ tags:
   - RBAC
   - Security Framework
   - Access Control
+copyright_url: https://stormpath.com/blog/new-rbac-resource-based-access-control
+copyright_title: "The New RBAC: Resource-Based Access Control"
+author: Les Hazlewood
 ---
 
 This article discusses how security policies are managed using the concept of Roles and how the predominant role-based mechanism for securing applications is largely insufficient.  I discuss what I believe is a much better way of securing applications.

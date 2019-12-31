@@ -246,7 +246,7 @@ $post-copyright : (
   border: (
     width: 3px,
     style: solid,
-    color: #ff1700
+    color: $grey-dark
   )
 );
 
@@ -275,6 +275,7 @@ $site-author-image-padding            : 2px;
 $site-author-image-width              : 96px;
 $site-author-image-height             : auto;
 $site-author-image-border-width       : 2px;
+$site-author-image-border-radius      : 4px;
 $site-author-image-border-color       : $black-dim;
 
 $site-author-name-margin              : 5px 0 0;
@@ -294,6 +295,7 @@ $site-state-item-name-font-size       : 13px;
 $site-state-item-name-color           : inherit;
 $site-state-item-border-color         : $black-dim;
 
+$toc-indent-guides                    : $black-dim;
 $toc-link-color                       : $grey-dark;
 $toc-link-border-color                : $black-light;
 $toc-link-hover-color                 : $grey-light;
