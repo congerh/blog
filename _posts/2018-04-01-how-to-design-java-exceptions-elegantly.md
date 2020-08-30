@@ -385,7 +385,7 @@ public javax.validation.Validator getValidator(){
 他将获取一个Validator对象，然后我们在service中进行注入便可以使用了:
 
 ```java
-@Autowired     
+@Autowired
 private Validator validator ;
 ```
 
@@ -433,7 +433,7 @@ ok,基本介绍了如何做一个基础的判断，那么再回到异常的设�
 
 只抛出RuntimeException就算是优雅的抛出异常吗？当然不是，对于service中的抛出异常，笔者认为大致有两种抛出的方法:
 
-1. 抛出带状态码RumtimeException异常
+1. 抛出带状态码RuntimeException异常
 2. 抛出指定类型的RuntimeException异常
 
 相对这两种异常的方式进行结束，第一种异常指的是我所有的异常都抛RuntimeException异常，但是需要带一个状态码，调用者可以根据状态码再去查询究竟service抛出了一个什么样的异常。
@@ -551,7 +551,7 @@ NotMatchUserAddressException,
 DefaultAddressNotDeleteException.  
 根据不同的业务需求抛出不同的异常。
 
-#### 获取收货地址列表:
+#### 获取收货地址列表
 
 * 入参:
   * 用户id
@@ -577,22 +577,22 @@ public List<Address> listAddresses(Integer uid) {
 }
 ```
 
-#### api异常设计
+### api异常设计
 
 大致有两种抛出的方法:
 
-1. 抛出带状态码RumtimeException异常
+1. 抛出带状态码RuntimeException异常
 2. 抛出指定类型的RuntimeException异常
 
 这个是在设计service层异常时提到的，通过对service层的介绍，我们在service层抛出异常时选择了第二种抛出的方式，不同的是，在api层抛出异常我们需要使用这两种方式进行抛出:要指定api异常的类型，并且要指定相关的状态码，然后才将异常抛出，这种异常设计的核心是让调用api的使用者更能清楚的了解发生异常的详细信息，除了抛出异常外，我们还需要将状态码对应的异常详细信息以及异常有可能发生的问题制作成一个对应的表展示给用户，方便用户的查询。（如github提供的api文档，微信提供的api文档等）,还有一个好处:如果用户需要自定义提示消息，可以根据返回的状态码进行提示的修改。
 
-##### api验证约束
+#### api验证约束
 
 首先对于api的设计来说，需要存在一个dto对象，这个对象负责和调用者进行数据的沟通和传递，然后dto->domain在传给service进行操作，这一点一定要注意，第二点，除了说道的service需要进行基础判断(null判断)和jsr 303验证以外，同样的，api层也需要进行相关的验证，如果验证不通过的话，直接返回给调用者，告知调用失败，不应该带着不合法的数据再进行对service的访问，那么读者可能会有些迷惑，不是service已经进行验证了，为什么api层还需要进行验证么？这里便设计到了一个概念:编程中的墨菲定律，如果api层的数据验证疏忽了，那么有可能不合法数据就带到了service层，进而讲脏数据保存到了数据库。
 
 **所以缜密编程的核心是:永远不要相信收到的数据是合法的。**
 
-##### api异常设计
+#### api异常设计
 
 设计api层异常时，正如我们上边所说的，需要提供错误码和错误信息，那么可以这样设计，提供一个通用的api超类异常，其他不同的api异常都继承自这个超类:
 
@@ -674,7 +674,7 @@ public abstract class AddressErrorCode {
 
 ok,那么api层的异常就已经设计完了，在此多说一句，AddressErrorCode错误码类存放了可能出现的错误码，更合理的做法是把他放到配置文件中进行管理。
 
-##### api处理异常
+#### api处理异常
 
 api层会调用service层，然后来处理service中出现的所有异常，首先，需要保证一点，一定要让api层非常轻，基本上做成一个转发的功能就好(接口参数，传递给service参数，返回给调用者数据,这三个基本功能)，然后就要在传递给service参数的那个方法调用上进行异常处理。
 
@@ -712,7 +712,7 @@ public AddressDTO add(@Valid @RequestBody AddressDTO addressDTO){
 
 这里的处理方案是调用service时，判断异常的类型，然后将任何service异常都转化成api异常，然后抛出api异常，这是常用的一种异常转化方式。相似删除收货地址和获取收货地址也类似这样处理，在此，不在赘述。
 
-##### api异常转化
+#### api异常转化
 
 已经讲解了如何抛出异常和何如将service异常转化为api异常，那么转化成api异常直接抛出是否就完成了异常处理呢？ 答案是否定的，当抛出api异常后，我们需要把api异常返回的数据(json or xml)让用户看懂，那么需要把api异常转化成dto对象(ErrorDTO),看如下代码:
 
@@ -761,7 +761,3 @@ ok,这样就完成了api异常转化成用户可以读懂的DTO对象了，代�
 ## 总结
 
 本文只从如何设计异常作为重点来讲解，涉及到的api传输和service的处理，还有待优化，比如api接口访问需要使用https进行加密，api接口需要OAuth2.0授权或api接口需要签名认证等问题，文中都未曾提到，本文的重心在于异常如何处理，所以读者只需关注涉及到异常相关的问题和处理方式就可以了。希望本篇文章对你理解异常有所帮助。
-
-## 参考
-
-* [如何优雅的设计java异常](https://lrwinx.github.io/2016/04/28/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1java%E5%BC%82%E5%B8%B8/)
