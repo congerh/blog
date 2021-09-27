@@ -372,7 +372,7 @@ dns_prefetch:
   enable: true
   urls: [
     "https://cdn.njilc.net",
-    "https://matomo.njilc.com",
+    "https://mwa.njilc.com",
     "https://utterances.njilc.com",
     "https://api.utterances.njilc.com",
     "https://cdn.jsdelivr.net",
@@ -581,9 +581,9 @@ busuanzi_count:
 # Matomo Analytics
 matomo_analytics:
   enable: true
-  url: https://matomo.njilc.com/
+  url: https://mwa.njilc.com/
   id: 2
-  src: https://matomo.njilc.com/m.min.js
+  src: https://mwa.njilc.com/m.min.js
 
 
 
